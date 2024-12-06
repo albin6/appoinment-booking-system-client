@@ -27,6 +27,7 @@ const AppointmentManager = () => {
     setPhoneNumber("");
     setDate("");
     setTime("");
+    alert("Appointment Added");
   };
 
   const handleModifyAppointment = (e) => {
@@ -40,12 +41,16 @@ const AppointmentManager = () => {
         time,
       },
     });
+    setFullName("");
+    setPhoneNumber("");
+    setDate("");
+    setTime("");
+    alert("Appointment Updated");
   };
 
   const handleCancelAppointment = (e) => {
     e.preventDefault();
     deleteAppoinment(phoneNumber);
-    console.log("Canceling appointment:", { phoneNumber });
     alert("Appointment canceled");
   };
 
