@@ -7,12 +7,16 @@ import {
 } from "../api/appoinments";
 
 export const useAppointments = () => {
-  return useQuery("appointments", fetchAppointments);
+  return useQuery({
+    queryKey: ["appointments"],
+    queryFn: fetchAppointments,
+  });
 };
 
 export const useCreateAppointment = () => {
   const queryClient = useQueryClient();
-  return useMutation(createAppointment, {
+  return useMutation({
+    mutationFn: createAppointment,
     onSuccess: () => {
       queryClient.invalidateQueries("appointments");
     },
@@ -21,7 +25,8 @@ export const useCreateAppointment = () => {
 
 export const useUpdateAppointment = () => {
   const queryClient = useQueryClient();
-  return useMutation(updateAppointment, {
+  return useMutation({
+    mutationFn: updateAppointment,
     onSuccess: () => {
       queryClient.invalidateQueries("appointments");
     },
@@ -30,7 +35,8 @@ export const useUpdateAppointment = () => {
 
 export const useDeleteAppointment = () => {
   const queryClient = useQueryClient();
-  return useMutation(deleteAppointment, {
+  return useMutation({
+    mutationFn: deleteAppointment,
     onSuccess: () => {
       queryClient.invalidateQueries("appointments");
     },

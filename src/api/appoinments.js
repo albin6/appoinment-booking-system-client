@@ -13,13 +13,13 @@ export const createAppointment = async (data) => {
 };
 
 // Update an appointment
-export const updateAppointment = async (id, data) => {
-  const response = await client.put(`/appointments/${id}`, data);
+export const updateAppointment = async ({ phone, data }) => {
+  const response = await client.put(`/appointments/${phone}`, data);
   return response.data;
 };
 
 // Delete an appointment
-export const deleteAppointment = async (id) => {
-  const response = await client.delete(`/appointments/${id}`);
+export const deleteAppointment = async (phone) => {
+  const response = await client.delete(`/appointments/${phone}`);
   return response.data;
 };

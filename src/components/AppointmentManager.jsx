@@ -3,25 +3,27 @@ import TabNavigation from "./TabNavigation";
 import BookForm from "./froms/BookForm";
 import ModifyForm from "./froms/ModifyForm";
 import CancelForm from "./froms/CancelForm";
-import AllAppointments from "./AllAppoinments";
+import AllAppointments from "./AllAppointments";
+import {
+  useCreateAppointment,
+  useDeleteAppointment,
+  useUpdateAppointment,
+} from "../hooks/useAppoinments";
 
 const AppointmentManager = () => {
+  const { mutate: createAppointment } = useCreateAppointment();
+  const { mutate: updateAppointment } = useUpdateAppointment();
+  const { mutate: deleteAppoinment } = useDeleteAppointment();
   const [activeTab, setActiveTab] = useState("book");
   const [phoneNumber, setPhoneNumber] = useState("");
   const [fullName, setFullName] = useState("");
   const [date, setDate] = useState("");
   const [time, setTime] = useState("");
-  const [appointments, setAppointments] = useState([
-    { phoneNumber: "123-456-7890", date: "2023-05-15", time: "10:00" },
-    { phoneNumber: "098-765-4321", date: "2023-05-16", time: "14:30" },
-  ]);
-
   const handleBookAppointment = (e) => {
     e.preventDefault();
-    const newAppointment = { phoneNumber, date, time };
-    setAppointments([...appointments, newAppointment]);
-    console.log("Booking appointment:", newAppointment);
-    alert(`Appointment booked for ${date} at ${time}`);
+    const newAppointment = { name: fullName, phone: phoneNumber, date, time };
+    createAppointment(newAppointment);
+    setFullName("");
     setPhoneNumber("");
     setDate("");
     setTime("");
@@ -29,12 +31,20 @@ const AppointmentManager = () => {
 
   const handleModifyAppointment = (e) => {
     e.preventDefault();
-    console.log("Modifying appointment:", { phoneNumber, date, time });
-    alert(`Appointment modified for ${date} at ${time}`);
+    updateAppointment({
+      phoneNumber,
+      data: {
+        name: fullName,
+        phone: phoneNumber,
+        date,
+        time,
+      },
+    });
   };
 
   const handleCancelAppointment = (e) => {
     e.preventDefault();
+    deleteAppoinment(phoneNumber);
     console.log("Canceling appointment:", { phoneNumber });
     alert("Appointment canceled");
   };
@@ -63,6 +73,8 @@ const AppointmentManager = () => {
 
         {activeTab === "modify" && (
           <ModifyForm
+            fullName={fullName}
+            setFullName={setFullName}
             phoneNumber={phoneNumber}
             setPhoneNumber={setPhoneNumber}
             date={date}
@@ -81,7 +93,7 @@ const AppointmentManager = () => {
           />
         )}
 
-        {activeTab === "all" && <AllAppointments appointments={appointments} />}
+        {activeTab === "all" && <AllAppointments />}
       </div>
     </div>
   );
