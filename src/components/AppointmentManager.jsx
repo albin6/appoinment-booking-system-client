@@ -62,6 +62,7 @@ const AppointmentManager = () => {
       onSuccess: () => toast.success("Appointment Deleted"),
       onError: () => toast.error("Something Went wrong"),
     });
+    setPhoneNumber("");
   };
 
   return (
