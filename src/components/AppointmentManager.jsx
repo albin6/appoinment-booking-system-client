@@ -37,7 +37,7 @@ const AppointmentManager = () => {
     e.preventDefault();
     updateAppointment(
       {
-        phoneNumber,
+        phone: phoneNumber,
         data: {
           name: fullName,
           phone: phoneNumber,
