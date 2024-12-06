@@ -9,6 +9,7 @@ import {
   useDeleteAppointment,
   useUpdateAppointment,
 } from "../hooks/useAppoinments";
+import { toast } from "react-toastify";
 
 const AppointmentManager = () => {
   const { mutate: createAppointment } = useCreateAppointment();
@@ -22,36 +23,45 @@ const AppointmentManager = () => {
   const handleBookAppointment = (e) => {
     e.preventDefault();
     const newAppointment = { name: fullName, phone: phoneNumber, date, time };
-    createAppointment(newAppointment);
-    setFullName("");
-    setPhoneNumber("");
-    setDate("");
-    setTime("");
-    alert("Appointment Added");
-  };
-
-  const handleModifyAppointment = (e) => {
-    e.preventDefault();
-    updateAppointment({
-      phoneNumber,
-      data: {
-        name: fullName,
-        phone: phoneNumber,
-        date,
-        time,
-      },
+    createAppointment(newAppointment, {
+      onSuccess: () => toast.success("Appointment Added"),
+      onError: () => toast.error("Something Went wrong"),
     });
     setFullName("");
     setPhoneNumber("");
     setDate("");
     setTime("");
-    alert("Appointment Updated");
+  };
+
+  const handleModifyAppointment = (e) => {
+    e.preventDefault();
+    updateAppointment(
+      {
+        phoneNumber,
+        data: {
+          name: fullName,
+          phone: phoneNumber,
+          date,
+          time,
+        },
+      },
+      {
+        onSuccess: () => toast.success("Appointment Updated"),
+        onError: () => toast.error("Something Went wrong"),
+      }
+    );
+    setFullName("");
+    setPhoneNumber("");
+    setDate("");
+    setTime("");
   };
 
   const handleCancelAppointment = (e) => {
     e.preventDefault();
-    deleteAppoinment(phoneNumber);
-    alert("Appointment canceled");
+    deleteAppoinment(phoneNumber, {
+      onSuccess: () => toast.success("Appointment Deleted"),
+      onError: () => toast.error("Something Went wrong"),
+    });
   };
 
   return (
